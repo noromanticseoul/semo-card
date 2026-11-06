@@ -14,7 +14,7 @@ window.CARD = {
   "address": "",
   "note": "SEMO.WORKS — Quality at its finest",
   "cardFront": "assets/card-info.png",
-  "cardBack": "assets/card-logo.png",
+  "cardBack": "assets/card-back-deboss.png",
   "cardVideo": "",
   "backgroundVideo": "",
   "accentColor": "#6b733e"

@@ -27,31 +27,41 @@
   /* ===== 3D 회전 명함 ===== */
   .stage { width: min(90vw, 440px); aspect-ratio: 1.75; perspective: 1400px; margin: 9vh 0 0; cursor: pointer; touch-action: pan-y; }
   .card { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transform: rotateY(var(--ry, 0deg)); }
-  .card.spin { animation: spin 3s cubic-bezier(.5,0,.2,1) both; }
+  /* 처음 진입: 뒷면(음각 로고)에서 시작해 반 바퀴 돌아 앞면에서 멈춤 */
+  .card.spin { animation: spin 2.4s cubic-bezier(.5,0,.2,1) both; }
   @keyframes spin {
-    0%   { transform: translateY(30px) scale(.8) rotateY(-180deg) rotateX(14deg); opacity: 0; }
-    12%  { opacity: 1; }
-    100% { transform: translateY(0) scale(1) rotateY(360deg) rotateX(0); opacity: 1; }
+    0%   { transform: translateY(30px) scale(.85) rotateY(-180deg) rotateX(12deg); }
+    100% { transform: translateY(0) scale(1) rotateY(0deg) rotateX(0); }
   }
   /* 모서리 컷(투명 영역)이 그대로 보이도록 이미지 자체를 마스크로 사용 */
+  :root { --thick: 4px; }   /* 명함 두께 */
   .face {
     position: absolute; inset: 0;
     backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    transform: translateZ(calc(var(--thick) / 2 + .05px));
   }
   .face i {
     position: absolute; inset: 0; background: var(--img) center / 100% 100% no-repeat;
     -webkit-mask: var(--img) center / 100% 100% no-repeat; mask: var(--img) center / 100% 100% no-repeat;
   }
-  .face.back { transform: rotateY(180deg); }
+  .face.back { transform: rotateY(180deg) translateZ(calc(var(--thick) / 2 + .05px)); }
+  /* 종이 질감 (2번 사진 같은 코튼/펠트지 결) */
+  .face i::after { content: ""; position: absolute; inset: 0; background: url("assets/paper.png") 0 0 / 220px 220px repeat; pointer-events: none; }
+  /* 두께: 명함 모양 그대로 얇은 층을 겹쳐 옆면을 만듦 */
+  .edge {
+    position: absolute; inset: 0; background: #565d31;
+    -webkit-mask: var(--shape) center / 100% 100% no-repeat; mask: var(--shape) center / 100% 100% no-repeat;
+    transform: translateZ(var(--z));
+  }
   .shadow { width: 76%; height: 16px; margin: 3vh auto 0; border-radius: 50%; background: rgba(40,42,20,.35); filter: blur(12px); }
   .cardVideo { width: min(90vw, 440px); margin: 9vh 0 0; }
 
   /* ===== 정보 + 버튼 ===== */
   .info { width: min(100%, 440px); margin-top: 6vh; display: grid; gap: 4px;
-          opacity: 0; animation: up .7s 2.6s ease-out forwards; }
+          opacity: 0; animation: up .7s 2.0s ease-out forwards; }
   .info h1 { font-size: 34px; font-weight: 400; line-height: 1; }
   .info .role { font-size: 20px; }
-  .actions { width: min(100%, 440px); display: grid; gap: 10px; margin-top: 28px; opacity: 0; animation: up .7s 2.8s ease-out forwards; }
+  .actions { width: min(100%, 440px); display: grid; gap: 10px; margin-top: 28px; opacity: 0; animation: up .7s 2.2s ease-out forwards; }
   .btn {
     display: flex; align-items: center; justify-content: space-between; min-height: 56px; padding: 0 20px; border-radius: 0;
     font-size: 17px; text-decoration: none; color: var(--ink); background: transparent; border: 1px solid var(--ink);
@@ -76,6 +86,7 @@
   <div id="cardWrap">
     <div class="stage" id="stage" aria-label="명함 (터치하면 앞뒤 뒤집기)">
       <div class="card" id="card">
+        <div id="edges"></div>
         <div class="face front"><i id="front"></i></div>
         <div class="face back"><i id="back"></i></div>
       </div>
@@ -126,6 +137,10 @@
 
   const face = (el, src) => { el.style.setProperty('--img', 'url("' + src + '")'); };
   face($('front'), C.cardFront); face($('back'), C.cardBack);
+  // 두께용 층 (앞면 모양 기준: 모서리 컷 포함)
+  const edges = $('edges'), T = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--thick')) || 4, L = 9;
+  edges.style.cssText = 'position:absolute;inset:0;transform-style:preserve-3d;--shape:url("' + C.cardFront + '")';
+  for (let k = 0; k < L; k++) { const d = document.createElement('div'); d.className = 'edge'; d.style.setProperty('--z', (-T / 2 + T * k / (L - 1)).toFixed(2) + 'px'); edges.appendChild(d); }
 
   const card = $('card'), stage = $('stage');
   let ry = 0, dragging = false, startX = 0, startRy = 0;
