@@ -1,0 +1,13 @@
+BEGIN:VCARD
+VERSION:3.0
+N;CHARSET=UTF-8:Kim;Moses;;;
+FN;CHARSET=UTF-8:Moses Kim
+ORG;CHARSET=UTF-8:SEMO.WORKS
+TITLE;CHARSET=UTF-8:Founder / CEO
+TEL;TYPE=CELL,VOICE:+82 10 8688 6764
+EMAIL;TYPE=INTERNET,WORK:kimpy0ng@naver.com
+URL:https://semo.works
+URL;TYPE=Instagram:https://instagram.com/semo_nemo_01
+X-SOCIALPROFILE;TYPE=instagram:https://instagram.com/semo_nemo_01
+NOTE;CHARSET=UTF-8:SEMO.WORKS — Quality at its finest
+END:VCARD
