@@ -14,14 +14,14 @@
   html, body { height: 100%; }
   body {
     background: var(--paper); color: var(--ink);
-    font-family: "PP Neue Gstaad", "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: 400; letter-spacing: -.01em;
+    font-family: "PP Neue Gstaad", "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: 400;
     display: flex; flex-direction: column; align-items: center;
     min-height: 100svh; padding: 20px 16px calc(28px + env(safe-area-inset-bottom)); overflow-x: hidden;
   }
   #bgVideo { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; opacity: .35; }
 
   .top { width: min(100%, 440px); display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; }
-  .brand { font-size: 17px; font-weight: 400; letter-spacing: -.02em; }
+  .brand { font-size: 17px; font-weight: 400; }
   .brand sup { font-size: .55em; }
 
   /* ===== 3D 회전 명함 ===== */
@@ -49,7 +49,7 @@
   /* ===== 정보 + 버튼 ===== */
   .info { width: min(100%, 440px); margin-top: 6vh; display: grid; gap: 4px;
           opacity: 0; animation: up .7s 2.6s ease-out forwards; }
-  .info h1 { font-size: 34px; font-weight: 400; letter-spacing: -.035em; line-height: 1; }
+  .info h1 { font-size: 34px; font-weight: 400; line-height: 1; }
   .info .role { font-size: 20px; }
   .actions { width: min(100%, 440px); display: grid; gap: 10px; margin-top: 28px; opacity: 0; animation: up .7s 2.8s ease-out forwards; }
   .btn {
@@ -61,8 +61,8 @@
   .btn.primary { background: var(--olive); color: var(--ink); border-color: var(--olive); font-weight: 400; }
   .btn.primary::after { content: "+"; font-size: 22px; }
   .btn:active { background: var(--ink); color: var(--paper); }
-  .row { display: grid; grid-template-columns: 1fr; gap: 10px; }
-  .row .btn { min-height: 52px; }
+  .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .row .btn { min-height: 52px; padding: 0 10px; gap: 6px; font-size: 14px; white-space: nowrap; }
   .hint { font-size: 12px; margin-top: 14px; opacity: .5; }
   @keyframes up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) { .card.spin { animation: none; } .info, .actions { animation-delay: 0s; } }
