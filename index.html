@@ -34,7 +34,9 @@
     100% { transform: translateY(0) scale(1) rotateY(0deg) rotateX(0); }
   }
   /* 모서리 컷(투명 영역)이 그대로 보이도록 이미지 자체를 마스크로 사용 */
-  :root { --thick: 4px; }   /* 명함 두께 */
+  :root { --thick: 7px; }   /* 명함 두께 */
+  /* 정면에서도 옆면(두께)이 보이도록 살짝 기울여 둠 */
+  .tilt { width: 100%; height: 100%; transform-style: preserve-3d; transform: rotateX(12deg) rotateY(-16deg); }
   .face {
     position: absolute; inset: 0;
     backface-visibility: hidden; -webkit-backface-visibility: hidden;
@@ -85,11 +87,11 @@
 
   <div id="cardWrap">
     <div class="stage" id="stage" aria-label="명함 (터치하면 앞뒤 뒤집기)">
-      <div class="card" id="card">
+      <div class="tilt"><div class="card" id="card">
         <div id="edges"></div>
         <div class="face front"><i id="front"></i></div>
         <div class="face back"><i id="back"></i></div>
-      </div>
+      </div></div>
     </div>
     <div class="shadow"></div>
   </div>
@@ -138,7 +140,7 @@
   const face = (el, src) => { el.style.setProperty('--img', 'url("' + src + '")'); };
   face($('front'), C.cardFront); face($('back'), C.cardBack);
   // 두께용 층 (앞면 모양 기준: 모서리 컷 포함)
-  const edges = $('edges'), T = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--thick')) || 4, L = 9;
+  const edges = $('edges'), T = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--thick')) || 7, L = 15;
   edges.style.cssText = 'position:absolute;inset:0;transform-style:preserve-3d;--shape:url("' + C.cardFront + '")';
   for (let k = 0; k < L; k++) { const d = document.createElement('div'); d.className = 'edge'; d.style.setProperty('--z', (-T / 2 + T * k / (L - 1)).toFixed(2) + 'px'); edges.appendChild(d); }
 
