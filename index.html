@@ -35,8 +35,8 @@
   }
   /* 모서리 컷(투명 영역)이 그대로 보이도록 이미지 자체를 마스크로 사용 */
   :root { --thick: 7px; }   /* 명함 두께 */
-  /* 정면에서도 옆면(두께)이 보이도록 살짝 기울여 둠 */
-  .tilt { width: 100%; height: 100%; transform-style: preserve-3d; transform: rotateX(12deg) rotateY(-16deg); }
+  /* 기울기 없이 정면 (필요하면 transform 에 rotateX/rotateY 를 넣어 기울일 수 있음) */
+  .tilt { width: 100%; height: 100%; transform-style: preserve-3d; transform: none; }
   .face {
     position: absolute; inset: 0;
     backface-visibility: hidden; -webkit-backface-visibility: hidden;
