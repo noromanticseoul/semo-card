@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""뒷면 로고를 '음각(블라인드 디보싱)'으로 바꾸고, 종이 질감 타일을 만든다.
+"""뒷면 로고를 음각으로, 앞면에는 그 자국이 볼록하게 이어지도록 만들고 (card-front-emboss.png),
+뒷면 로고를 '음각(블라인드 디보싱)'으로 바꾸고, 종이 질감 타일을 만든다.
 사용: python3 tools/deboss.py   (assets/card-logo.png → assets/card-back-deboss.png, assets/paper.png)"""
 import pathlib, numpy as np
 from PIL import Image, ImageFilter
@@ -25,6 +26,18 @@ out = np.empty_like(rgb)
 out[..., :3] = np.clip(paper[None, None, :] * f[..., None], 0, 255)
 out[..., 3] = alpha
 Image.fromarray(out.astype(np.uint8), "RGBA").save(A / "card-back-deboss.png", optimize=True)
+
+# 앞면: 뒷면 음각이 종이를 통과해 '볼록(양각)'으로 올라온 자국. 좌우 반전 위치에 같은 로고.
+fr = Image.open(A / "card-info.png").convert("RGBA")
+frgb = np.asarray(fr, dtype=np.float32)
+m = logo[:, ::-1]                                   # 뒤집으면 좌우가 반전됨
+hf = blur(m, 9)                                     # 볼록 높이맵 (뒷면보다 살짝 더 부드럽게)
+gy2, gx2 = np.gradient(hf)
+shade2 = -(gx2 * L[0] + gy2 * L[1]) * 12
+f2 = 1 + np.clip(shade2, -0.3, 0.3) + 0.03 * blur(m, 3)
+fo = frgb.copy()
+fo[..., :3] = np.clip(frgb[..., :3] * f2[..., None], 0, 255)
+Image.fromarray(fo.astype(np.uint8), "RGBA").save(A / "card-front-emboss.png", optimize=True)
 
 # 종이 질감 타일 (펠트/코튼지 느낌의 미세 결 + 섬유) — 흰/검 점의 투명도로만 표현
 rng = np.random.default_rng(7); N = 512

@@ -13,7 +13,7 @@ window.CARD = {
   "website": "https://semo.works",
   "address": "",
   "note": "SEMO.WORKS — Quality at its finest",
-  "cardFront": "assets/card-info.png",
+  "cardFront": "assets/card-front-emboss.png",
   "cardBack": "assets/card-back-deboss.png",
   "cardVideo": "",
   "backgroundVideo": "",
